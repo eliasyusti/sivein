@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    container_name: mydatabase
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sivein_db
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+  api:
+    image: node:latest
+    restart: always
+    working_dir: /api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/api
+    depends_on: 
+     - postgres
+    command: npm run start:dev
