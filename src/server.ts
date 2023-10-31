@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import app from "./app";
-import { AppDataSource } from "./db";
+import app from "./config/app";
+import { AppDataSource } from "./config/db";
 
 async function main() {
   try {
@@ -11,6 +11,7 @@ async function main() {
   } catch (error) {
     console.error(error);
   }
+
 }
 
 main();
