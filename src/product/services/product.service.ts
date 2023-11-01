@@ -3,7 +3,6 @@ import { createBaseService } from "../../config/base.service";
 import { ProductDTO } from "../dto/product.dto";
 import { Product } from "../entities/product.entity";
 
-
 export const ProductService = createBaseService(Product);
 
 async function findAllProducts(): Promise<Product[]> {
@@ -22,7 +21,7 @@ async function deleteProduct(id: string): Promise<DeleteResult> {
   return (await ProductService).delete({ id });
 }
 
-async function updateProduct(id: string, infoUpdate: ProductDTO): Promise<UpdateResult> {
+async function updateProduct(id: string,infoUpdate: ProductDTO): Promise<UpdateResult> {
   return (await ProductService).update(id, infoUpdate);
 }
 

@@ -1,71 +1,86 @@
 import { Request, Response } from "express";
 import {
-  ProductService,
   createProduct,
   deleteProduct,
   findAllProducts,
   findProductById,
   updateProduct,
 } from "../services/product.service";
+import { httpResponse } from "../../shared/response/response";
 
-
-async function getProducts(req: Request, res: Response) {
+const getProducts = async (req: Request, res: Response) => {
   try {
-    await ProductService;
     const data = await findAllProducts();
-    console.log(data)
-    res.status(200).json(data);
+    if (data.length === 0) {
+      return httpResponse.notFound(res, "No existe dato");
+    }
+    return httpResponse.ok(res, data);
   } catch (e) {
-    console.error(e);
+    return httpResponse.error(res, e);
   }
-}
+};
 
-async function getProductById(req: Request, res: Response) {
+const getProductById = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    await ProductService;
     const data = await findProductById(id);
-    res.status(200).json(data);
+    if (!data) {
+      return httpResponse.notFound(res, "No existe dato");
+    }
+    return httpResponse.ok(res, data);
   } catch (e) {
     console.error(e);
-    res.status(404).json({ error: `Product with ID ${id} not found` });
+    return httpResponse.error(res, e);
   }
-}
+};
 
-async function createProducts(req: Request, res: Response) {
+const createProducts = async (req: Request, res: Response) => {
   const product = req.body;
   try {
-    await ProductService;
+    if (
+      product.name === "" ||
+      product.description === "" ||
+      product.price === "" ||
+      product.category === ""
+    ) {
+      return httpResponse.notFound(res, "Hay un campo vacio");
+    }
     const data = await createProduct(product);
-    res.status(201).json(data);
+    return httpResponse.ok(res, data);
   } catch (e) {
     console.error(e);
+    return httpResponse.error(res, e);
   }
-}
+};
 
-async function updateProducts(req: Request, res: Response) {
+const updateProducts = async (req: Request, res: Response) => {
   const { id } = req.params;
   const product = req.body;
   try {
-    await ProductService;
     const data = await updateProduct(id, product);
-    res.status(200).json(data);
+    if (!data.affected) {
+      return httpResponse.notFound(res, "Hay un error en actualizar");
+    }
+    return httpResponse.ok(res, data);
   } catch (e) {
     console.error(e);
+    return httpResponse.error(res, e);
   }
-}
+};
 
-async function deleteProducts(req: Request, res: Response) {
+const deleteProducts = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    await ProductService;
     const data = await deleteProduct(id);
-    res.status(204).send(data);
+    if (!data.affected) {
+      return httpResponse.notFound(res, "Hay un error en eliminar");
+    }
+    return httpResponse.ok(res, data);
   } catch (e) {
     console.error(e);
-    res.status(404).json({ error: `Product with ID ${id} not found` });
+    return httpResponse.error(res, e);
   }
-}
+};
 
 export {
   getProducts,
