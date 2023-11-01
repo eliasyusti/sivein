@@ -18,11 +18,10 @@ const Config: DataSourceOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   entities: [Product],
-  //migrations: [__dirname + "/../../migrations/*{.ts,.js}"],
-  synchronize: false,
-  //migrationsRun: true,
+  synchronize: true,
   logging: false,
   namingStrategy: new SnakeNamingStrategy(),
 };
 
+export const PORT = process.env.PORT;
 export const AppDataSource: DataSource = new DataSource(Config);
