@@ -18,7 +18,7 @@ const Config: DataSourceOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   entities: [Product],
-  synchronize: true,
+  synchronize: false,
   logging: false,
   namingStrategy: new SnakeNamingStrategy(),
 };
