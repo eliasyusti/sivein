@@ -6,7 +6,7 @@ import { Product } from "../entities/product.entity";
 export const ProductService = createBaseService(Product);
 
 async function findAllProducts(): Promise<Product[]> {
-  return (await ProductService).find();
+  return (await ProductService).find({ relations: ["category"] });
 }
 
 async function findProductById(id: string): Promise<Product | null> {
@@ -21,7 +21,10 @@ async function deleteProduct(id: string): Promise<DeleteResult> {
   return (await ProductService).delete({ id });
 }
 
-async function updateProduct(id: string,infoUpdate: ProductDTO): Promise<UpdateResult> {
+async function updateProduct(
+  id: string,
+  infoUpdate: ProductDTO
+): Promise<UpdateResult> {
   return (await ProductService).update(id, infoUpdate);
 }
 
