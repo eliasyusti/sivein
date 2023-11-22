@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import { httpResponse } from "../../shared/response/response";
 import {
-  createCategory,
-  deleteCategory,
-  findAllCategories,
-  findCategoryById,
-  updateCategory,
-} from "../services/category.service";
+  createCustomer,
+  deleteCustomer,
+  findAllCustomers,
+  findCustomerById,
+  updateCustomer,
+} from "../serivices/customer.service";
 
-const getCategoriesController = async (req: Request, res: Response) => {
+const getCustomers = async (req: Request, res: Response) => {
   try {
-    const data = await findAllCategories();
+    const data = await findAllCustomers();
     if (data.length === 0) {
       return httpResponse.notFound(res, "No existe dato");
     }
@@ -20,11 +20,11 @@ const getCategoriesController = async (req: Request, res: Response) => {
   }
 };
 
-const getCategoryByIdController = async (req: Request, res: Response) => {
+const getCustomerById = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const intId = parseInt(id, 10);
+  const intId = parseInt(id);
   try {
-    const data = await findCategoryById(intId);
+    const data = await findCustomerById(intId);
     if (!data) {
       return httpResponse.notFound(res, "No existe dato");
     }
@@ -35,13 +35,13 @@ const getCategoryByIdController = async (req: Request, res: Response) => {
   }
 };
 
-const createCategoryController = async (req: Request, res: Response) => {
-  const category = req.body;
+const createCustomers = async (req: Request, res: Response) => {
+  const Customer = req.body;
   try {
-    if (category.name === "") {
+    if (Customer.name === "") {
       return httpResponse.notFound(res, "Hay un campo vacio");
     }
-    const data = await createCategory(category);
+    const data = await createCustomer(Customer);
     return httpResponse.ok(res, data);
   } catch (e) {
     console.error(e);
@@ -49,12 +49,15 @@ const createCategoryController = async (req: Request, res: Response) => {
   }
 };
 
-const updateCategoryController = async (req: Request, res: Response) => {
+const updateCustomers = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const intId = parseInt(id, 10);
-  const category = req.body;
+  const intId = parseInt(id);
+  const Customer = req.body;
   try {
-    const data = await updateCategory(intId, category);
+    if (Customer.name === "") {
+      return httpResponse.notFound(res, "Hay un campo vacio");
+    }
+    const data = await updateCustomer(intId, Customer);
     if (!data.affected) {
       return httpResponse.notFound(res, "Hay un error en actualizar");
     }
@@ -65,11 +68,11 @@ const updateCategoryController = async (req: Request, res: Response) => {
   }
 };
 
-const deleteCategoryController = async (req: Request, res: Response) => {
+const deleteCustomers = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const intId = parseInt(id, 10);
+  const intId = parseInt(id);
   try {
-    const data = await deleteCategory(intId);
+    const data = await deleteCustomer(intId);
     if (!data.affected) {
       return httpResponse.notFound(res, "Hay un error en eliminar");
     }
@@ -81,9 +84,9 @@ const deleteCategoryController = async (req: Request, res: Response) => {
 };
 
 export {
-  getCategoriesController,
-  getCategoryByIdController,
-  createCategoryController,
-  updateCategoryController,
-  deleteCategoryController,
+  getCustomers,
+  getCustomerById,
+  createCustomers,
+  updateCustomers,
+  deleteCustomers,
 };

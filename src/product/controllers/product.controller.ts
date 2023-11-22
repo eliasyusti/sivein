@@ -22,8 +22,9 @@ const getProducts = async (req: Request, res: Response) => {
 
 const getProductById = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const idInt = parseInt(id, 10);
   try {
-    const data = await findProductById(id);
+    const data = await findProductById(idInt);
     if (!data) {
       return httpResponse.notFound(res, "No existe dato");
     }
@@ -56,6 +57,7 @@ const createProducts = async (req: Request, res: Response) => {
 
 const updateProducts = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const idInt = parseInt(id, 10);
   const product = req.body;
   try {
     if (
@@ -67,7 +69,7 @@ const updateProducts = async (req: Request, res: Response) => {
     ) {
       return httpResponse.notFound(res, "Hay un campo vacio");
     }
-    const data = await updateProduct(id, product);
+    const data = await updateProduct(idInt, product);
     if (!data.affected) {
       return httpResponse.notFound(res, "Hay un error en actualizar");
     }
@@ -80,8 +82,9 @@ const updateProducts = async (req: Request, res: Response) => {
 
 const deleteProducts = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const idInt = parseInt(id, 10);
   try {
-    const data = await deleteProduct(id);
+    const data = await deleteProduct(idInt);
     if (!data.affected) {
       return httpResponse.notFound(res, "Hay un error en eliminar");
     }

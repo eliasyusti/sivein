@@ -9,7 +9,7 @@ async function findAllProducts(): Promise<Product[]> {
   return (await ProductService).find({ relations: ["category"] });
 }
 
-async function findProductById(id: string): Promise<Product | null> {
+async function findProductById(id: number): Promise<Product | null> {
   return (await ProductService).findOneBy({ id });
 }
 
@@ -17,12 +17,12 @@ async function createProduct(body: ProductDTO): Promise<Product> {
   return (await ProductService).save(body);
 }
 
-async function deleteProduct(id: string): Promise<DeleteResult> {
+async function deleteProduct(id: number): Promise<DeleteResult> {
   return (await ProductService).delete({ id });
 }
 
 async function updateProduct(
-  id: string,
+  id: number,
   infoUpdate: ProductDTO
 ): Promise<UpdateResult> {
   return (await ProductService).update(id, infoUpdate);

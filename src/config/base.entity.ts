@@ -3,10 +3,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { IsInt } from "class-validator";
 
 export class BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+  @PrimaryGeneratedColumn()
+  @IsInt()
+  id: number;
 
   @CreateDateColumn({
     name: "created_at",
