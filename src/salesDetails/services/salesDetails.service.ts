@@ -18,14 +18,12 @@ export const createSalesDetailsService = async (
   const newDetail = (await DetailsSalesService).create(body);
   const product = await findProductById(newDetail.product.id);
   newDetail.subTotal = product!.price * newDetail.quantity;
-  // Obtener los detalles existentes de la venta
   const existingDetails = await (
     await DetailsSalesService
   ).find({
     where: { sales: { id: newDetail.sales.id } },
   });
   console.log(existingDetails);
-  // Calcular la suma total de los subtotales, incluyendo el nuevo detalle
   const subTotals = existingDetails.map((detail) => detail.subTotal);
   subTotals.push(newDetail.subTotal);
   newDetail.totalToPay = calculateSum(subTotals);

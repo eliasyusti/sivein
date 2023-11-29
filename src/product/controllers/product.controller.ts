@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   createProduct,
   deleteProduct,
+  desactiveProduct,
   findAllProducts,
   findProductById,
   updateProduct,
@@ -10,7 +11,7 @@ import { httpResponse } from "../../shared/response/response";
 
 const getProducts = async (req: Request, res: Response) => {
   try {
-    const data = await findAllProducts();
+    const data = await findAllProducts(true);
     if (data.length === 0) {
       return httpResponse.notFound(res, "No existe dato");
     }
@@ -95,10 +96,34 @@ const deleteProducts = async (req: Request, res: Response) => {
   }
 };
 
+const productActiveStatus = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const idInt = parseInt(id, 10);
+  try {
+    const product = await findProductById(idInt);
+    if (!product) {
+      return httpResponse.notFound(res, "El producto no existe");
+    }
+    const updatedProduct = await desactiveProduct(idInt, !product.active);
+
+    if (!updatedProduct.affected) {
+      return httpResponse.notFound(
+        res,
+        "Hubo un error al actualizar el estado activo del producto"
+      );
+    }
+    return httpResponse.ok(res, updatedProduct);
+  } catch (e) {
+    console.error(e);
+    return httpResponse.error(res, e);
+  }
+};
+
 export {
   getProducts,
   getProductById,
   createProducts,
   updateProducts,
   deleteProducts,
+  productActiveStatus,
 };

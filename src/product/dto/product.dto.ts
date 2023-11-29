@@ -16,5 +16,8 @@ export class ProductDTO extends BaseDTO {
   stock: number;
 
   @IsNotEmpty()
+  active: boolean;
+
+  @IsNotEmpty()
   category: Category;
 }

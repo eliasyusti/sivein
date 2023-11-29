@@ -5,8 +5,17 @@ import { Product } from "../entities/product.entity";
 
 export const ProductService = createBaseService(Product);
 
-async function findAllProducts(): Promise<Product[]> {
-  return (await ProductService).find({ relations: ["category"] });
+async function findAllProducts(activeOnly: boolean = true): Promise<Product[]> {
+  const conditions: Record<string, any> = {};
+
+  if (activeOnly) {
+    conditions.active = true;
+  }
+
+  return (await ProductService).find({
+    relations: ["category"],
+    where: conditions,
+  });
 }
 
 async function findProductById(id: number): Promise<Product | null> {
@@ -28,10 +37,18 @@ async function updateProduct(
   return (await ProductService).update(id, infoUpdate);
 }
 
+async function desactiveProduct(
+  id: number,
+  active: boolean
+): Promise<UpdateResult> {
+  return (await ProductService).update(id, { active });
+}
+
 export {
   findAllProducts,
   findProductById,
   createProduct,
   deleteProduct,
   updateProduct,
+  desactiveProduct,
 };

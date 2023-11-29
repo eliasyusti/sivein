@@ -17,6 +17,9 @@ export class Product extends BaseEntity {
   @Column()
   stock: number;
 
+  @Column({ type: "boolean", default: true })
+  active: boolean;
+
   @ManyToOne(() => Category, (category) => category.products)
   @JoinColumn({ name: "category_id" })
   category: Category;
