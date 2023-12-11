@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { httpResponse } from "../../shared/response/response";
 import {
   createSalesDetailsService,
+  deleteSaleDetailService,
   getDetailsAndTotalForSale,
 } from "../services/salesDetails.service";
 
@@ -41,6 +42,21 @@ export const getSalesDetailsController = async (
     );
 
     return httpResponse.ok(res, { details, totalToPay });
+  } catch (e) {
+    console.error(e);
+    return httpResponse.error(res, e);
+  }
+};
+
+export const deleteSaleDetail = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const idInt = parseInt(id, 10);
+  try {
+    const data = await deleteSaleDetailService(idInt);
+    if (!data.affected) {
+      return httpResponse.notFound(res, "Hay un error en eliminar");
+    }
+    return httpResponse.ok(res, data);
   } catch (e) {
     console.error(e);
     return httpResponse.error(res, e);

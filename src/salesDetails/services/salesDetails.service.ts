@@ -44,3 +44,9 @@ export const getDetailsAndTotalForSale = async (
 
   return { details, totalToPay };
 };
+
+export const deleteSaleDetailService = async (
+  id: number
+): Promise<DeleteResult> => {
+  return (await DetailsSalesService).delete({ id });
+};
