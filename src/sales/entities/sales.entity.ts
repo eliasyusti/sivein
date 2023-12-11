@@ -19,6 +19,6 @@ export class Sales extends BaseEntity {
   @OneToMany(() => SalesDetails, (salesDetails) => salesDetails.sales)
   salesDetails: SalesDetails[];
 
-  @Column()
+  @Column({ default: "efectivo" })
   paimentMethod: string;
 }
