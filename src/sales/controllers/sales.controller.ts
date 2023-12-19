@@ -38,7 +38,7 @@ const getSaleById = async (req: Request, res: Response) => {
 const createSales = async (req: Request, res: Response) => {
   const Sale = req.body;
   try {
-    if (Sale.paimentMethod === "") {
+    if (Sale.paymentMethod === "") {
       return httpResponse.notFound(res, "Hay un campo vacio");
     }
     const data = await createSale(Sale);
@@ -54,7 +54,7 @@ const updateSales = async (req: Request, res: Response) => {
   const idInt = parseInt(id, 10);
   const Sale = req.body;
   try {
-    if (Sale.paimentMethod === "") {
+    if (Sale.paymentMethod === "") {
       return httpResponse.notFound(res, "Hay un campo vacio");
     }
     const data = await updateSale(idInt, Sale);
