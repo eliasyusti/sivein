@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import { httpResponse } from "../../shared/response/response";
 import {
-  createCategory,
-  deleteCategory,
-  findAllCategories,
-  findCategoryById,
-  updateCategory,
-} from "../services/category.service";
+  createSale,
+  deleteSale,
+  findAllSales,
+  findSaleById,
+  updateSale,
+} from "../services/sales.service";
 
-const getCategoriesController = async (req: Request, res: Response) => {
+const getSales = async (req: Request, res: Response) => {
   try {
-    const data = await findAllCategories();
+    const data = await findAllSales();
     if (data.length === 0) {
       return httpResponse.notFound(res, "No existe dato");
     }
@@ -20,11 +20,11 @@ const getCategoriesController = async (req: Request, res: Response) => {
   }
 };
 
-const getCategoryByIdController = async (req: Request, res: Response) => {
+const getSaleById = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const intId = parseInt(id, 10);
+  const idInt = parseInt(id, 10);
   try {
-    const data = await findCategoryById(intId);
+    const data = await findSaleById(idInt);
     if (!data) {
       return httpResponse.notFound(res, "No existe dato");
     }
@@ -35,13 +35,13 @@ const getCategoryByIdController = async (req: Request, res: Response) => {
   }
 };
 
-const createCategoryController = async (req: Request, res: Response) => {
-  const category = req.body;
+const createSales = async (req: Request, res: Response) => {
+  const Sale = req.body;
   try {
-    if (category.name === "") {
+    if (Sale.paymentMethod === "") {
       return httpResponse.notFound(res, "Hay un campo vacio");
     }
-    const data = await createCategory(category);
+    const data = await createSale(Sale);
     return httpResponse.ok(res, data);
   } catch (e) {
     console.error(e);
@@ -49,12 +49,15 @@ const createCategoryController = async (req: Request, res: Response) => {
   }
 };
 
-const updateCategoryController = async (req: Request, res: Response) => {
+const updateSales = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const intId = parseInt(id, 10);
-  const category = req.body;
+  const idInt = parseInt(id, 10);
+  const Sale = req.body;
   try {
-    const data = await updateCategory(intId, category);
+    if (Sale.paymentMethod === "") {
+      return httpResponse.notFound(res, "Hay un campo vacio");
+    }
+    const data = await updateSale(idInt, Sale);
     if (!data.affected) {
       return httpResponse.notFound(res, "Hay un error en actualizar");
     }
@@ -65,11 +68,11 @@ const updateCategoryController = async (req: Request, res: Response) => {
   }
 };
 
-const deleteCategoryController = async (req: Request, res: Response) => {
+const deleteSales = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const intId = parseInt(id, 10);
+  const idInt = parseInt(id, 10);
   try {
-    const data = await deleteCategory(intId);
+    const data = await deleteSale(idInt);
     if (!data.affected) {
       return httpResponse.notFound(res, "Hay un error en eliminar");
     }
@@ -80,10 +83,4 @@ const deleteCategoryController = async (req: Request, res: Response) => {
   }
 };
 
-export {
-  getCategoriesController,
-  getCategoryByIdController,
-  createCategoryController,
-  updateCategoryController,
-  deleteCategoryController,
-};
+export { getSales, getSaleById, createSales, updateSales, deleteSales };

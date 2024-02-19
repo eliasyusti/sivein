@@ -9,7 +9,7 @@ async function findAllCategories(): Promise<Category[]> {
   return (await CategoryService).find();
 }
 
-async function findCategoryById(id: string): Promise<Category | null> {
+async function findCategoryById(id: number): Promise<Category | null> {
   return (await CategoryService).findOneBy({ id });
 }
 
@@ -17,12 +17,12 @@ async function createCategory(body: CategoryDTO): Promise<Category> {
   return (await CategoryService).save(body);
 }
 
-async function deleteCategory(id: string): Promise<DeleteResult> {
+async function deleteCategory(id: number): Promise<DeleteResult> {
   return (await CategoryService).delete({ id });
 }
 
 async function updateCategory(
-  id: string,
+  id: number,
   infoUpdate: CategoryDTO
 ): Promise<UpdateResult> {
   return (await CategoryService).update(id, infoUpdate);
