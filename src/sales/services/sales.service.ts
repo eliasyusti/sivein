@@ -6,11 +6,16 @@ import { SalesDTO } from "../dto/sales.dto";
 export const SalesService = createBaseService(Sales);
 
 async function findAllSales(): Promise<Sales[]> {
-  return (await SalesService).find({ relations: ["customer"] });
+  return (await SalesService).find({
+    relations: ["customer", "salesDetails", "salesDetails.product"],
+  });
 }
 
 async function findSaleById(id: number): Promise<Sales | null> {
-  return (await SalesService).findOneBy({ id });
+  return (await SalesService).findOne({
+    where: { id },
+    relations: ["customer", "salesDetails", "salesDetails.product"],
+  });
 }
 
 async function createSale(body: SalesDTO): Promise<Sales> {

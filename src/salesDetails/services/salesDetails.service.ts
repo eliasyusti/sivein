@@ -4,6 +4,7 @@ import { SalesDetailsDTO } from "../dto/salesDetails.dto";
 import { findProductById } from "../../product/services/product.service";
 import { findAllSales } from "../../sales/services/sales.service";
 import { SalesDetails } from "../entities/salesDetails.entity";
+import { Sales } from "../../sales/entities/sales.entity";
 //import { SalesDTO } from "../../sales/dto/sales.dto";
 
 const DetailsSalesService = createBaseService(SalesDetails);
@@ -23,12 +24,15 @@ export const createSalesDetailsService = async (
   ).find({
     where: { sales: { id: newDetail.sales.id } },
   });
-  console.log(existingDetails);
   const subTotals = existingDetails.map((detail) => detail.subTotal);
   subTotals.push(newDetail.subTotal);
   newDetail.totalToPay = calculateSum(subTotals);
 
   return (await DetailsSalesService).save(newDetail);
+};
+
+export const getAllSalesDetails = async (): Promise<SalesDetails[]> => {
+  return (await DetailsSalesService).find({ relations: ["product", "sales"] });
 };
 
 export const getDetailsAndTotalForSale = async (

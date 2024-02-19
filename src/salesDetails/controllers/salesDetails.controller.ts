@@ -3,6 +3,7 @@ import { httpResponse } from "../../shared/response/response";
 import {
   createSalesDetailsService,
   deleteSaleDetailService,
+  getAllSalesDetails,
   getDetailsAndTotalForSale,
 } from "../services/salesDetails.service";
 
@@ -44,6 +45,21 @@ export const getSalesDetailsController = async (
     return httpResponse.ok(res, { details, totalToPay });
   } catch (e) {
     console.error(e);
+    return httpResponse.error(res, e);
+  }
+};
+
+export const getAllSalesDetailsController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const data = await getAllSalesDetails();
+    if (data.length === 0) {
+      return httpResponse.notFound(res, "No existe dato");
+    }
+    return httpResponse.ok(res, data);
+  } catch (e) {
     return httpResponse.error(res, e);
   }
 };
